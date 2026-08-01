@@ -78,12 +78,21 @@ int main(int argc, char *argv[]) {
                 break;
             }
             case 'n': {
-                size_t json_array_length = json_object_array_length(items);
                 char *approximate_name = optarg;
+				if (strlen(approximate_name) <= 2) {
+					printf("Enter at least 3 characters.\n");
+					break;
+				}
+
+                size_t json_array_length = json_object_array_length(items);
                 MatchResult match_array[MAX_MATCHES];
                 int match_count = 0;
                     
                 for (size_t i = 0; i < json_array_length; i++) {
+					if (match_count >= MAX_MATCHES) {
+						printf("More than %d result found. %d result will be displayed.\nRefine your search.\n", MAX_MATCHES, MAX_MATCHES);
+						break;
+					}
                     struct json_object *item = json_object_array_get_idx(items, i);
                     struct json_object *name_obj;
                     struct json_object *id_obj;
@@ -103,10 +112,6 @@ int main(int argc, char *argv[]) {
                             }                            
 
                             match_count++;                            
-                            if (match_count > MAX_MATCHES) {
-                                printf("More than %d result found. %d result will be displayed.\nRefine your search.\n", MAX_MATCHES, MAX_MATCHES);
-                                break;
-                            }
                         }
                     }
                 }
