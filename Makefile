@@ -11,6 +11,7 @@ $(TARGET): main.c
 
 install: $(TARGET)
 	cp $(TARGET) $(PREFIX)bin/
+	mkdir -p $(PREFIX)usr/share/$(TARGET)
 	cp $(JSON_TARGET) $(PREFIX)usr/share/itemsarz/
 
 uninstall:
